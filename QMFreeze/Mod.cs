@@ -11,16 +11,16 @@ namespace QMFreeze
     {
         public const string Name = "QMFreeze";
         public const string Author = "tetra";
-        public const string Version = "1.0.0";
-        public const string DownloadLink = "https://github.com/tetra-fox/QMFreeze/releases/download/1.0.0/QMFreeze.dll";
+        public const string Version = "1.0.1";
+        public const string DownloadLink = "https://github.com/tetra-fox/QMFreeze/releases/download/1.0.1/QMFreeze.dll";
     }
 
     public class Mod : MelonMod
     {
         public static bool FreezeAllowed;
         public static bool Frozen;
-        private static Vector3 originalGravity;
-        private static Vector3 originalVelocity;
+        private static Vector3 _originalGravity;
+        private static Vector3 _originalVelocity;
 
         public override void OnApplicationStart()
         {
@@ -64,26 +64,26 @@ namespace QMFreeze
         public static void Freeze()
         {
             if (!FreezeAllowed || !Settings.Enabled) return;
-            originalGravity = Physics.gravity;
-            originalVelocity = Networking.LocalPlayer.GetVelocity();
+            _originalGravity = Physics.gravity;
+            _originalVelocity = Networking.LocalPlayer.GetVelocity();
 
             // Don't need to freeze if you're not moving
-            if (originalVelocity == Vector3.zero) return;
+            if (_originalVelocity == Vector3.zero) return;
 
             Physics.gravity = Vector3.zero;
             Networking.LocalPlayer.SetVelocity(Vector3.zero);
             Frozen = true;
-            MelonLogger.Msg("Frozen");
+            // MelonLogger.Msg("Frozen");
         }
 
         public static void Unfreeze()
         {
             if (!FreezeAllowed || !Frozen || !Settings.Enabled) return;
-            Physics.gravity = originalGravity;
+            Physics.gravity = _originalGravity;
             // If you're trying to respawn after being launched at a super high velocity, you might want this off so that you don't keep flying after respawning
-            if (Settings.RestoreVelocity) Networking.LocalPlayer.SetVelocity(originalVelocity);
+            if (Settings.RestoreVelocity) Networking.LocalPlayer.SetVelocity(_originalVelocity);
             Frozen = false;
-            MelonLogger.Msg("Unfrozen");
+            // MelonLogger.Msg("Unfrozen");
         }
 
         public override void OnPreferencesLoaded() => Settings.Apply();

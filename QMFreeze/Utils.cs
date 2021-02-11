@@ -31,7 +31,7 @@ namespace QMFreeze
                                 {
                                     MelonLogger.Msg("QMFreeze NOT permitted");
                                     Mod.FreezeAllowed = false;
-                                    break;
+                                    return;
                                 }
                             MelonLogger.Msg("QMFreeze permitted");
                             Mod.FreezeAllowed = true;
