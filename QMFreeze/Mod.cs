@@ -4,6 +4,9 @@ using QMFreeze.Components;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using VRC.SDKBase;
+using System;
+using System.Collections;
+
 
 namespace QMFreeze
 {
@@ -30,9 +33,11 @@ namespace QMFreeze
             MelonLogger.Msg("Registering settings...");
             Settings.Register();
             Settings.Apply();
+
+            MelonCoroutines.Start(New_VRCUIInit(Init));
         }
 
-        public override void VRChat_OnUiManagerInit()
+        public void Init()
         {
             MelonLogger.Msg("Adding QM listener...");
             // MicControls is enabled no matter the QM page that's open, so let's use that to determine whether or not the QM is open
@@ -42,6 +47,13 @@ namespace QMFreeze
             listener.OnDisabled += delegate { Unfreeze(); };
 
             MelonLogger.Msg("Initialized!");
+        }
+
+        public static IEnumerator New_VRCUIInit(Action postInitMethod)
+        {
+            while (GameObject.Find("UserInterface") == null)
+                yield return null;
+            postInitMethod();
         }
 
         [HarmonyPatch(typeof(NetworkManager), "OnJoinedRoom")]
