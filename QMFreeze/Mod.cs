@@ -14,8 +14,8 @@ namespace QMFreeze
     {
         public const string Name = "QMFreeze";
         public const string Author = "tetra";
-        public const string Version = "1.0.1";
-        public const string DownloadLink = "https://github.com/tetra-fox/QMFreeze/releases/download/1.0.1/QMFreeze.dll";
+        public const string Version = "1.0.4";
+        public const string DownloadLink = "https://github.com/tetra-fox/QMFreeze/releases/download/1.0.4/QMFreeze.dll";
     }
 
     public class Mod : MelonMod
